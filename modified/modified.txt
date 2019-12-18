@@ -1,0 +1,27 @@
+Marius Kruger (amanica) wrote on 2015-10-04:
+
+   I updated yesterday and got this issue afterwards.
+
+   I tried the following workaround with worked for me :
+
+   --- serialposix.py.stock 2015-10-03 06:53:45.241261071 -0700
+   +++ serialposix.py 2015-10-03 06:55:07.481262475 -0700
+   @@ -457,7 +457,11 @@
+             # Disconnected devices, at least on Linux, show the
+             # behavior that they are always ready to read immediately
+             # but reading returns nothing.
+   - raise SerialException('device reports readiness to read but returned no data (device disconnected?)')
+   + # retrying the read seems to get me past this error:
+   + # [ERROR] Can't read from printer (disconnected?) (SerialException): device reports readiness to read but returned no data (device disconnected?)
+   +
+   + #raise SerialException('device reports readiness to read but returned no data (device disconnected?)')
+   + pass
+
+see https://superuser.com/questions/979722/serialport-doenst-work-correctly-after-ubuntu-update#
+
+=========================================================================
+gadLinux (gad-aguilardelgado) wrote on 2015-12-29:
+
+   Here they say it's fixed in 3.13.0-66
+   https://github.com/pyserial/pyserial/issues/17
+
