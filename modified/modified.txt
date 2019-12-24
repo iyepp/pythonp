@@ -1,3 +1,9 @@
+2019.12.24 
+    python2.7 - python2: /usr/bin/python2 /usr/bin/python2.7 /usr/bin/python2.7-config /usr/lib/python2.7 /etc/python2.7 /usr/local/lib/python2.7 /usr/include/python2.7 /usr/share/man/man1/python2.1.gz
+    python3.7 - python3: /usr/bin/python3.6m /usr/bin/python3 /usr/bin/python3.6m-config /usr/bin/python3.6 /usr/bin/python3.6-config /usr/lib/python3.8 /usr/lib/python3 /usr/lib/python3.7 /usr/lib/python3.6 /etc/python3 /etc/python3.6 /usr/local/lib/python3.6 /usr/include/python3.6m /usr/include/python3.6 /usr/share/python3 /usr/share/man/man1/python3.1.gz
+    에서는 pyserial 문제발생하지 않음
+
+========================================================================
 Marius Kruger (amanica) wrote on 2015-10-04:
 
    I updated yesterday and got this issue afterwards.
