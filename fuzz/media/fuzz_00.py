@@ -5,6 +5,23 @@ from os import listdir
 
 file_list=[]
 
+path = "/tmp/usb/sda/LG Smart TV/"
+
+launch_cmd = 'luna-send -n 1 -f luna://com.webos.applicationManager/launch \
+\'{\"id\":\"com.webos.app.dsmp\",\"params\":{\"src\":\"/tmp/usb/sda/LG Smart \
+TV/\"\'$1\'\",\"type\":\"video\"}'
+
+l1 = "luna-send -n 1 -f luna://com.webos.applicationManager/launch \
+\'{\"id\":\"com.webos.app.dsmp\",\"params\":{\"src\":"
+
+l2 = ",\"type\":\"video\"}"
+
+close_cmd = 'luna-send -n 1 -f luna://com.webos.applicationManager/closeByAppId\
+\'{\"id\":\"com.webos.app.dsmp\"}'
+
+path_dir="/home/jmkim/_Security/00.Fuzz/2018_Signage_Fuzz/2018_Signage_Fuzz_Data_Media/fuzzdata"
+
+file_name=""
 def searching(the_list, indent=False, level=0):
     print( "\n"+ the_list )
 
@@ -22,22 +39,24 @@ def searching(the_list, indent=False, level=0):
         else:
             searching(join(the_list, each_item), indent, level+1)
 
-
-
-path_dir="/home/jmkim/_Security/00.Fuzz/2018_Signage_Fuzz/2018_Signage_Fuzz_Data_Media/fuzzdata"
-
 mylist = listdir(path_dir) # ['bmp', 'rm', '3gp', 'mp4', 'jpg', 'png', 'avi', 'mkv']
-
-mylist.sort() #정렬도 가능하다
+mylist.sort() #정렬
 
 for mypath in mylist:
     #print(join(path_dir, mypath))
     
     searching(join(path_dir, mypath), True, 1)
-    print(file_list)
+
     #print(isfile(join(path_dir, myfile)), end=" ")
     #if isfile(join(path_dir, myfile)):
     #    print(myfile + " is FILE")
     #else:
     #    print(myfile + " is DIR")
+
+#print(file_list)
+
+for i,f in enumerate(file_list):
+    file_name = l1+"\""+ f +"\"" +l2
+    print(i,file_name)
+
 
