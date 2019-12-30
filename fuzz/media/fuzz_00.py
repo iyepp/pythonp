@@ -3,6 +3,8 @@
 from os.path import isfile, join
 from os import listdir
 
+file_list=[]
+
 def searching(the_list, indent=False, level=0):
     print( "\n"+ the_list )
 
@@ -14,7 +16,9 @@ def searching(the_list, indent=False, level=0):
             if indent:
                 for tab_stop in range(level):
                     print("\t", end='')
-                print(each_item)
+                #print(each_item)
+                #print(join(the_list,each_item))
+                file_list.append(join(the_list,each_item))
         else:
             searching(join(the_list, each_item), indent, level+1)
 
@@ -30,6 +34,7 @@ for mypath in mylist:
     #print(join(path_dir, mypath))
     
     searching(join(path_dir, mypath), True, 1)
+    print(file_list)
     #print(isfile(join(path_dir, myfile)), end=" ")
     #if isfile(join(path_dir, myfile)):
     #    print(myfile + " is FILE")
