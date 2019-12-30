@@ -7,7 +7,8 @@ def searching(the_list, indent=False, level=0):
     print( "\n"+ the_list )
 
     items = listdir(the_list)
-    
+    items.sort()
+
     for each_item in items:
         if isfile(join(the_list, each_item)):
             if indent:
