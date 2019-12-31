@@ -66,16 +66,18 @@ for i,f in enumerate(file_list): # file_list 출력
     file_name = l1+"\""+ f +"\"" +l2
     print(i,file_name)
 
+#rl = ReadLine(ser)
 print("\nstart to send... data") # sending files
 for i, f in enumerate(file_list):
     time.sleep(3)
     
-    print( i )
-    file_name = l1+"\"" + f + "\"" +l2 +"\n"
+    file_name = l1 + "\"" + f + "\"" + l2 + "\\n" 
+    print( i, end= "")
     ser.write(file_name.encode())
-
-    #rl = ReadLine(ser)
+    #ser.write(bytes(bytearray(0x0D)))    
+    
     #while True:
-    #print(rl.readline())
+        #print(rl.readline())
+    
     ret_data = ser.readline()
     print(ret_data)

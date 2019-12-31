@@ -52,21 +52,33 @@ def readThread(ser):
     
     # 쓰레드 종료될때 까지 계속 돌림
     while not exitThread:
+        # 데이터를 보내자
+        #ser.write(f)
+
         # 데이터가 있다면
         for c in ser.read():
             #line 변수에 차곡차곡 추가하여 넣는다.
             line.append(chr(c))
 
-            if c == 10: #라인 끝을 만나면..
+            if c == b"\n": #라인 끝을 만나면..
                 #데이터 처리 함수로 호출
                 parsing_data(line)
 
                 #line 변수 초기화
                 del line[:]
 
+def ReadThread(ser):
+    print("in ReadThread")
+    ser_data = ser.readline()
+    ser_data.strip(b'\r').strip(b'\n')
+    print(ser_data)
+
+    if b'foo' in ser_data:
+        print( "foo received")
+        ser.close()
 
 def searching(the_list, indent=False, level=0):
-    print( "\n"+ the_list )
+    #print( "\n"+ the_list )
 
     items = listdir(the_list)
     items.sort()
@@ -74,8 +86,8 @@ def searching(the_list, indent=False, level=0):
     for each_item in items:
         if isfile(join(the_list, each_item)):
             if indent:
-                for tab_stop in range(level):
-                    print("\t", end='')
+                #for tab_stop in range(level):
+                  #print("\t", end='')
                 #print(each_item)
                 #print(join(the_list,each_item))
                 file_list.append(join(the_list,each_item))
@@ -98,8 +110,7 @@ if __name__ == "__main__":
     #else:
     #    print(myfile + " is DIR")
 
-#print(file_list)
-
+  #print(file_list)
   for i,f in enumerate(file_list):
     file_name = l1+"\""+ f +"\"" +l2
     print(i,file_name)
@@ -109,7 +120,14 @@ if __name__ == "__main__":
   #시리얼 열기
   ser = serial.Serial(port, baud, timeout=0)
   #시리얼 읽을 쓰레드 생성
-  thread = threading.Thread(target=readThread, args=(ser,))
+  thread = threading.Thread(target=ReadThread, args=(ser,))
   #시작
   thread.start()
 
+  #데이터를 보내자
+  print("\nstart to send... data")
+  for i, f in enumerate(file_list):
+    file_name = l1+"\"" + f + "\"" +l2 +"\n"
+    time.sleep(3)
+    print( i )
+    ser.write(file_name.encode())
