@@ -48,8 +48,8 @@ def searching(the_list, indent=False, level=0):
 file_list = []
 
 ser = serial.Serial('/dev/ttyUSB0', 115200)
-target_path ="/tmp/usb/sda/sda1/fuzz_video"
-local_path ="/home/jmkim/usb"
+target_path ="/tmp/usb/sda/sda1/sample_video_100000"
+local_path ="/home/jmkim/usb3"
 
 path_dir = local_path
 
@@ -84,7 +84,7 @@ for i, f in enumerate(file_list):  # file_list 출력 , target_path로 변경하
     print(i, file_name)
 
 for i, f in enumerate(file_list):
-    time.sleep(15)
+    time.sleep(10)
     print("[", i, "]")
 
     #file_name = l1 + "\"" + f + "\"" + l2 + "\n"

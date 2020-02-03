@@ -1,11 +1,12 @@
 import serial
 import time
+import io
 from os.path import isfile, join    # 파일 디렉토리
 from os import listdir              # 파일 디렉토리
 
 file_list=[]
 
-ser = serial.Serial('/dev/ttyUSB0', 115200)
+ser = serial.Serial('/dev/ttyUSB0', 115200 )
 class ReadLine:
     def __init__(self, s):
         self.buf = bytearray()
@@ -49,35 +50,51 @@ path_dir="/home/jmkim/_Security/00.Fuzz/2018_Signage_Fuzz/2018_Signage_Fuzz_Data
 
 l1 = "luna-send -n 1 -f luna://com.webos.applicationManager/launch \'{\"id\":\"com.webos.app.dsmp\",\"params\":{\"src\":"
 
-l2 = ",\"type\":\"video\"}"
+l2 = ",\"type\":\"video\"}\'\\n"
 
 close_cmd = 'luna-send -n 1 -f luna://com.webos.applicationManager/closeByAppId \'{\"id\":\"com.webos.app.dsmp\"}'
 
 path_dir="/home/jmkim/_Security/00.Fuzz/2018_Signage_Fuzz/2018_Signage_Fuzz_Data_Media/fuzzdata"
 
-
+test_str="abcdefghijklmnopqrstuvwxyz-abcdefghijklmnopqrstuvwxyz-abcdefghijklmnopqrstuvwxyz-abcdefghijklmnopqrstuvwxyz"
 #데이터를 보내자
 mylist = listdir(path_dir)
-
+templist=[]
 for mypath in mylist: # 디렉토리 순회 하여 file_list를 만듬
     searching(join(path_dir, mypath), True, 1)
 
 for i,f in enumerate(file_list): # file_list 출력
     file_name = l1+"\""+ f +"\"" +l2
     print(i,file_name)
+    templist.append(file_name)
 
-#rl = ReadLine(ser)
+rl = ReadLine(ser)
 print("\nstart to send... data") # sending files
-for i, f in enumerate(file_list):
+sio = io.TextIOWrapper(io.BufferedRWPair(ser,ser))
+
+#for i, f in enumerate(file_list):
+    #time.sleep(3)
+#    mylist.append(l1 + "\"" + f + "\"" + l2 + "\n" )
+out=''
+ret_data=''
+for i, f in enumerate(templist):
     time.sleep(3)
-    
-    file_name = l1 + "\"" + f + "\"" + l2 + "\\n" 
-    print( i, end= "")
-    ser.write(file_name.encode())
-    #ser.write(bytes(bytearray(0x0D)))    
-    
+    ser.write(f.encode('ascii'))
+    #ser.write(f.decode('hex') + '\r\n')
+
+
+    #sio.write(file_name)
+    #ser.flush()
     #while True:
-        #print(rl.readline())
-    
-    ret_data = ser.readline()
+    #    print(rl.readline())
+
+    #ser.flush()
+    #ret_data = ser.readline(2000)
+    #ret_data = sio.readline()
+    while ser.inWaiting() > 0:
+        out += ser.read(1)
+        print("out", out)
+
+    if out != '':
+        ret_data = ">>"+" ".join(hex(ord(n)) for n in out)
     print(ret_data)

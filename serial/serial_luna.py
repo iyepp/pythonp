@@ -4,7 +4,6 @@ import time
 import signal
 import threading
 
-
 line = [] #라인 단위로 데이터 가져올 리스트 변수
 
 port = '/dev/ttyUSB0' # 시리얼 포트

@@ -4,14 +4,12 @@ import time
 import signal
 import threading
 
-
 line = [] #라인 단위로 데이터 가져올 리스트 변수
 
 port = '/dev/ttyUSB1' # 시리얼 포트
 baud = 115200 # 시리얼 보드레이트(통신속도)
 
 exitThread = False   # 쓰레드 종료용 변수
-
 
 #쓰레드 종료용 시그널 함수
 def handler(signum, frame):
