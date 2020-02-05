@@ -66,6 +66,8 @@ close_cmd = 'luna-send -n 1 -f luna://com.webos.applicationManager/closeByAppId 
 #luna-send -n 1 -f luna://com.webos.applicationManager/running '{}'
 #luna-send -n 1 -f luna://com.webos.applicationManager/closeByAppId '{ "id": "com.webos.app.dsmp" }'
 #luna-send -n 1 -f luna://com.webos.applicationManager/running '{}'
+
+pop = "luna-send -n 1 -f luna://com.webos.service.pqcontroller/setDebuggingData '{\"alertPopup\":5}'"
 # 데이터를 보내자
 mylist = listdir(path_dir) # local_path로 file_list를 생성함
 
@@ -92,15 +94,19 @@ for i, f in enumerate(file_list):
     tempString = tempString[-1:]
     tempString = join(target_path, tempString[0])
     file_name = L1 + tempString + L2 + "\n"
+
+    # print("[in]", file_name)
     # file_name = l1+f+l2+"\n"
     # print( i, file_name)
     # ser.write(bytes(bytearray(0x0D)))
     ser.write(file_name.encode('utf-8'))
+#    ser.write(pop.encode('utf-8'))
+
     # sio.write(file_name.encode('utf-8'))
     # sio.flush()
 
     while True:
-        ret_data = ser.readline(2048)
+        ret_data = ser.readline()
         # if ret_data.find(b'error'):
         #     print("ERROR Occured\n", file_name)
         #     print(ret_data)
@@ -111,6 +117,12 @@ for i, f in enumerate(file_list):
             # comparing with  the end of luna command, '}'\\n"
             print(b'}\r\n')
             break;
+
         else:
-            print(ret_data)
+            if ret_data.find(b'[DILE_I2C]') != -1:
+                continue;
+            else:
+                print(ret_data, " : ", len(ret_data))
+    print() # new line to separate another looping.
+
 
